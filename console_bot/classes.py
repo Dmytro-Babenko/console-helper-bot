@@ -51,6 +51,25 @@ class Phone(Field):
         elif value:
             raise ValueError(f'{value} it\'s not number')
 
+class Adress(Field):
+    """Accept string wich format is 'City, street, house number, number of flat(optional)'"""
+    def __init__(self, value:str) -> None:
+        self.__value = None
+        self.value = value
+
+    @property
+    def value(self):
+        return self.__value
+
+    @value.setter
+    def value(self, value):
+        value = value.replace(' ', '')
+        if len(value.split(','))<=4 and value.split(',')[0].isalpha() and value.split(',')[1].isalpha():
+            self.__value = value
+        else:
+            raise ValueError('Adress should be in format: city, street, number of house, nuber of flat(optional)')
+
+
 class Birthday(Field):
     def __init__(self, value) -> None:
         self.__value = None
