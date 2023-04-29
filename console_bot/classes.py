@@ -51,7 +51,7 @@ class Phone(Field):
         elif value:
             raise ValueError(f'{value} it\'s not number')
 
-class Adress(Field):
+class Address(Field):
     """Accept string wich format is 'City, street, house number, number of flat(optional)'"""
     def __init__(self, value:str) -> None:
         self.__value = None
@@ -67,7 +67,7 @@ class Adress(Field):
         if len(value.split(','))<=4 and value.split(',')[0].isalpha() and value.split(',')[1].isalpha():
             self.__value = value
         else:
-            raise ValueError('Adress should be in format: city, street, number of house, nuber of flat(optional)')
+            raise ValueError('Address should be in format: city, street, number of house, nuber of flat(optional)')
 
 
 class Birthday(Field):
@@ -92,10 +92,11 @@ class Email(Field):
             
 class Record():
     '''Represent record with fields'''
-    def __init__(self, name, *phones, birthday=None):
+    def __init__(self, name, *phones, address, birthday=None):
         self.name = name         
         self.phones = [phone for phone in filter(lambda phone: phone.value, phones)]
         self.birthday = birthday
+        self.address = address
 
     def __str__(self):
         output = f'name: {self.name.value}'
@@ -108,6 +109,10 @@ class Record():
         if self.birthday:
             birthday = str(self.birthday)
             output += f' birthday: {birthday}'
+
+        if self.address:
+            address = str(self.address)
+            output += f' address: {address}'
 
         return output
 
