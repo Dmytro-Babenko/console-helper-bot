@@ -27,19 +27,21 @@ MAIN_COMMANDS = {
 MAIN_COMMANDS_WORDS = '|'.join(MAIN_COMMANDS)
 
 
-def main():
-    main_interface = ConsoleInterface()
-    main_interface.show_output(help())
+def run_bot(interface):
+    interface.show_output(help())
     while True:
-        user_input = main_interface.get_input('Choose points: address book, notes, sort: ')
+        user_input = interface.get_input('Choose points: address book, notes, sort: ')
         command, _ = ab.parser(user_input, MAIN_COMMANDS_WORDS)
         handler = MAIN_COMMANDS.get(command, no_command)
-        output = handler(main_interface)
+        output = handler(interface)
         if output:
-            main_interface.show_output(output)
+            interface.show_output(output)
         if output == 'Good bye':
             break
 
+def main():
+    main_interface = ConsoleInterface()
+    run_bot(main_interface)
 
 if __name__ == '__main__':
     main()
