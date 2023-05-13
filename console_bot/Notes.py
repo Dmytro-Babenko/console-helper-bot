@@ -4,6 +4,7 @@ import pickle
 import os
 
 from console_bot.handlers import instruction
+from console_bot.interface import Interface
 
 NOTES_INSTRUCTION = 'instruction for notes.txt'
 
@@ -199,20 +200,20 @@ def message_parser(text):
             return [command, note]
 
 
-def main():
-    print(help())
+def main(interface: Interface):
+    interface.show_output(help())
     while True:
-        text = input('Write your command: ')
+        text = interface.get_input('Write your command: ')
         if text == 'return':
             notes.save_in_file()
-            print('return')
+            interface.show_output('return')
             break
         res = message_parser(text)
         if res:
             if res[0] in commands_dict:
-                print(commands_dict[res[0]](res))
+                interface.show_output(commands_dict[res[0]](res))
         else:
-            print("There no command")
+            interface.show_output("There no command")
 
 
 

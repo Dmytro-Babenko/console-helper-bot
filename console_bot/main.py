@@ -2,6 +2,7 @@ import console_bot.ab_work as ab
 from console_bot.handlers import no_command, instruction
 import console_bot.Notes as Notes
 import console_bot.sort as sort
+from console_bot.interface import ConsoleInterface
 
 MAIN_INSTRUCTION = 'instruction for menu.txt'
 
@@ -27,14 +28,15 @@ MAIN_COMMANDS_WORDS = '|'.join(MAIN_COMMANDS)
 
 
 def main():
-    print(help())
+    main_interface = ConsoleInterface()
+    main_interface.show_output(help())
     while True:
-        user_input = input('Choose points: address book, notes, sort: ')
+        user_input = main_interface.get_input('Choose points: address book, notes, sort: ')
         command, _ = ab.parser(user_input, MAIN_COMMANDS_WORDS)
         handler = MAIN_COMMANDS.get(command, no_command)
-        output = handler()
+        output = handler(main_interface)
         if output:
-            print(output)
+            main_interface.show_output(output)
         if output == 'Good bye':
             break
 

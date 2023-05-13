@@ -1,6 +1,7 @@
 import re
 
 import console_bot.handlers as handlers
+from console_bot.interface import Interface
 
 
 OPERATIONS = {
@@ -35,14 +36,14 @@ def parser(message: str, commands: str) -> tuple[str|None, str|None, str|None]:
         return command, data
     return 'no command', ''
 
-def main():
-    print(handlers.help())
+def main(interface: Interface):
+    interface.show_output(handlers.help())
     while True:
-        inp = input('Write your command: ')
+        inp = interface.get_input('Write your command: ')
         command, data  = parser(inp, COMMAND_WORDS)
         handler = OPERATIONS.get(command, handlers.no_command)
         output = handler(data)
-        print(output)
+        interface.show_output(output)
         if output == 'Return':
             break
     pass 

@@ -4,6 +4,7 @@ import shutil
 
 import console_bot.ab_work as ab
 from console_bot.handlers import no_command, input_error, instruction
+from console_bot.interface import Interface
 
 SORT_INSTRUCTION = 'instruction for sorter.txt'
 
@@ -156,14 +157,14 @@ SORT_COMMANDS = {
 SORT_COMMANDS_WORDS = '|'.join(SORT_COMMANDS)
 
 
-def main():
-    print(start())
+def main(interface: Interface):
+    interface.show_output(start())
     while True:
-        user_input = input('Write your command: ')
+        user_input = interface.get_input('Write your command: ')
         command, data = ab.parser(user_input, SORT_COMMANDS_WORDS)
         handler = SORT_COMMANDS.get(command, no_command)
         output = handler(data)
-        print(output)
+        interface.show_output(output)
         if output == 'Return':
             break
 
